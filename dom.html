@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width,initial-scale=1.0">
+        <title>Dom</title>
+        <style>
+
+        </style>
+    </head>
+    <body>
+        <h1 id="favoritesHeader">  These are my favorite foods: </h1>
+        <div>
+            <ul id="favoritesList">
+                <li>pizza</li>
+                <li>chicken</li>
+                <li>burgers</li>
+            </ul>
+        </div>
+        <h2>And also favorite pets!</h2>
+        <ul>
+            <li>cats</li>
+            <li>dogs</li>
+        </ul>
+    </body>
+    <script>
+        const header=document.getElementById("favoritesHeader");
+        console.log(header.textContent);
+
+        const listItems=document.querySelectorAll("#favoritesList > li");
+        for(const element of listItems)
+    {
+        console.log(element);
+    }
+    </script>
+</html>
