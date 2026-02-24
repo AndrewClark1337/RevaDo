@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { User } from '../register/register';
 
 @Component({
   selector: 'app-login',
@@ -7,21 +8,15 @@ import { Component } from '@angular/core';
   styleUrl: './login.css',
 })
 
-export class LoginComponent {
+export class LoginComponent{
     login(uname: string, password: string): User | null {
             if(uname === "johndoe" && password === "password123"){
                 return {first:"John",last:"Doe",user:"johndoe",pass:"password123",dob:new Date("1990-01-01"),email:"john.doe@example.com"};
             }
-            return null;
+            else{
+                return null;
+            }
+            
     
         }
-}
-export interface User{
-    first?: string,
-    last?: string,
-    user: string,
-    pass: string,
-    dob?: Date,
-    email: string,
-    phone?: string
 }

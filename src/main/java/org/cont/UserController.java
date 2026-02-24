@@ -33,8 +33,15 @@ public class UserController {
     @PostMapping("/register")
     public String register(@RequestParam User user) {
         System.out.println("registering user: " + user.toString());
-        userService.addUser(user);
-        return "redirect:/login";
+        try {
+            userService.addUser(user);
+            return "User registered successfully";
+
+        } catch (Exception e) {
+            return "Error registering user: " + e.getMessage();
+        }
+       
+        
         
     }
     

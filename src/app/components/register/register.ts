@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
-import { User } from '../login/login';
+import { UserService } from '../../services/user-service';
+
 
 @Component({
   selector: 'app-register',
@@ -8,8 +9,9 @@ import { User } from '../login/login';
   styleUrl: './register.css',
 })
 export class RegisterComponent {
-
+  constructor(uService: UserService) {}
   register(){
+    let msg = document.getElementById("msg") as HTMLParagraphElement;
     console.log("Registering user...");
     let uname = (document.getElementById("username") as HTMLInputElement).value;
     let pass = (document.getElementById("password") as HTMLInputElement).value;
@@ -26,18 +28,24 @@ export class RegisterComponent {
         first: first, last: last, dob: new Date(dob), phone: phone};
         console.log("User registered:", user);
         let msg = document.getElementById("msg") as HTMLParagraphElement;
-        msg.innerText = "User registered successfully!";
-        fetch("register",{
-          method: "POST",
-          headers: {"Content-Type": "application/json"},
-          body: JSON.stringify(user)
-        }).catch(err => {
-          console.error("Error registering user:", err);
-        });
+        
 
     } else {
-      let msg = document.getElementById("msg") as HTMLParagraphElement;
+      
       msg.innerText = "Error: Passwords do not match";
     }
   }
+}
+
+export interface User{
+    
+    user: string,
+    pass: string,
+    email: string,
+    dob?: Date,
+    first?: string,
+    last?: string,
+    phone?: string
+
+   
 }
