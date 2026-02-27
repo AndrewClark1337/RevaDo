@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { User } from '../components/register/register';
+
 import { HttpClient } from '@angular/common/http';
 
 @Injectable({
@@ -33,4 +33,16 @@ export class UserService {
     }
     return true;
   }
+}
+export interface User{
+    
+    username: string,
+    password: string,
+    email: string,
+    dob?: Date,
+    first?: string,
+    last?: string,
+    phone?: string
+
+   
 }

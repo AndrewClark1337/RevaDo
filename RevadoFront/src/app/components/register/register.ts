@@ -1,10 +1,12 @@
 import { Component } from '@angular/core';
-import { UserService } from '../../services/user-service';
+import { UserService,User } from '../../services/user-service';
+import { RouterLink } from '@angular/router';
+
 
 
 @Component({
   selector: 'app-register',
-  imports: [],
+  imports: [RouterLink],
   templateUrl: './register.html',
   styleUrl: './register.css',
 })
@@ -43,15 +45,5 @@ export class RegisterComponent {
   }
 }
 
-export interface User{
-    
-    username: string,
-    password: string,
-    email: string,
-    dob?: Date,
-    first?: string,
-    last?: string,
-    phone?: string
 
-   
-}
+

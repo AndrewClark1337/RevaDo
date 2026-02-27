@@ -1,20 +1,23 @@
 package com.example.demo.objects;
 
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.NonNull;
 import lombok.Setter;
 import org.springframework.stereotype.Component;
 
-//import javax.persistence.GeneratedValue;
-//import javax.persistence.GenerationType;
-//import javax.persistence.Id;
+
 import java.util.Date;
 
-@Component  @Getter @Setter
+ @Getter @Setter @NoArgsConstructor @Component @Entity
 public class User {
-    //@Id
-    //@GeneratedValue(strategy = GenerationType.AUTO)
-    private long uId;
+    @Id
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    private long uid;
  
     @NonNull
     String password;
@@ -27,6 +30,7 @@ public class User {
     Date dob;   
     String first; 
     String last;
+
 
 
 }

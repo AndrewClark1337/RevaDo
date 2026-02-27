@@ -1,20 +1,28 @@
 package com.example.demo.services;
 
-//import org.example.objects.User;
+import com.example.demo.objects.User;
 import com.example.demo.repo.UserRepository;
+import lombok.NoArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
+
 
 @Service
 public class UserService {
     private final UserRepository userRepository;
 
-    
-    public UserService(UserRepository userRepository) {
+
+    @Autowired
+    public UserService(UserRepository userRepository)
+    {
+
         this.userRepository = userRepository;
     }
-    public String addUser(String user){
+
+    public void addUser(User user){
         System.out.println("adding to database");
-        //return userRepository.saveAndFlush(user);
-        return "";
+        userRepository.saveAndFlush(user);
+
     }
 }

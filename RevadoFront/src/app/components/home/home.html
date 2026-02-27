@@ -1,0 +1,19 @@
+
+@if (loggedIn!= null)
+{
+  <section>
+    <h1>Welcome, {{loggedIn.username}}!</h1>
+  </section>
+}
+@else
+{
+    <section>
+        <p>An account is required to access this page. Please sign in or register.</p>  
+        <br>
+        <button routerLink="/register">Register</button>
+        <br>
+        <button routerLink="/login">Login</button>
+       
+    </section>
+    
+}
