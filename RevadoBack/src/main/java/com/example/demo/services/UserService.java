@@ -19,7 +19,11 @@ public class UserService {
 
         this.userRepository = userRepository;
     }
+    public User loginUser(String username, String password)
+    {
+        return userRepository.findByUsernameAndPassword(username, password);
 
+    }
     public void addUser(User user){
         System.out.println("adding to database");
         userRepository.saveAndFlush(user);

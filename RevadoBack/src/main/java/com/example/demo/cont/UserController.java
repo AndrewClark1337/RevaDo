@@ -9,6 +9,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+import java.sql.Date;
+
 
 @RestController
 public class UserController {
@@ -18,30 +20,48 @@ public class UserController {
     public UserController(UserService userService) {
         this.userService = userService;
     }
-    @GetMapping
-    public boolean login(@RequestParam String pass, @RequestParam String uname)
+    @GetMapping("/login")
+    public ResponseEntity<User> login(@RequestParam String username, @RequestParam String password)
     {
-        /*
-        String[] passwords = {"password"};
-        for (String password : passwords) {
-            if (pass.equals(password)) {
-                return true;
+        try {
+            User u = this.userService.loginUser(username, password);
+            if (u != null){
+                System.out.println("logging in: " + u);
+                return ResponseEntity.ok(u);
             }
+            else
+            {
+                System.out.println("Error: User not found");
+                return ResponseEntity.ok(null);
+            }
+
         }
-        */
-         System.out.println("login");
-        return true;
+        catch (Exception e) {
+            return ResponseEntity.badRequest().build();
+        }
     }
-    @PostMapping("/register")
-    public ResponseEntity<String> register(@RequestBody User newUser) {
+    @PostMapping("/register" )
+    public ResponseEntity<String> register(@RequestParam String username,@RequestParam String password,  @RequestParam String email,
+                                           @RequestParam(required = false) String first,@RequestParam(required = false) String last,
+                                           @RequestParam(required = false) String phone,@RequestParam(required = false) String dob ) {
         System.out.println("register");
-       System.out.println("registering user: " + newUser.toString());
+        User user = new User();
+        user.setUsername(username);
+        user.setPassword(password);
+        user.setDob(dob);
+        user.setEmail(email);
+        user.setFirst(first);
+        user.setLast(last);
+        user.setPhone(phone);
+       System.out.println("registering user: " + user);
+
 
         try {
-            userService.addUser(newUser);
-            return ResponseEntity.ok("User registered successfully!");
+            userService.addUser(user);
+            return  ResponseEntity.ok("Message from backend: User registered successfully!");
 
-        } catch (Exception e) {
+        }
+        catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error registering user: " + e.getMessage());
         }
 

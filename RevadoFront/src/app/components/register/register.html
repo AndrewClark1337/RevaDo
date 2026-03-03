@@ -6,25 +6,26 @@
     </head>
     <body>
         <header>
-            <button routerLink="/">Back</button>
-            <br>
             <h1>Register New User:</h1>
         </header>
-        <section>
+        <section class="regForm">
             <form> 
-                <label>Username: <input id="uname" type="text" required ></label>
-                <label>Email: <input id="email" type="text" required></label>
-                <label>Password: <input id="pass" type="password" required></label>
-                <label>Confirm Password: <input id="confirmPass" type="password" required></label>
+                <div class="regSection">
+                    <label class="form-label a">Username: <input id="uname" type="text" required ></label>
+                    <label class="form-label b">Email: <input id="email" type="text" required></label>
+                    <label class="form-label c ">Password: <input id="pass" type="password" required></label>
+                    <label class="form-label d ">Confirm Password: <input id="confirm" type="password" required></label>
+                </div>
                 <br>
                 <h2>Optional information:</h2>
                 <br>
-                <label>First Name: <input id="fname"  type="text"></label>
-                <label>Last Name: <input id="lname" type="text"></label>
-                <label>Phone Number: <input id="phone" type="text"></label>
-                <label>Date of Birth: <input id="dob" type="date"></label>
-
-                <button type="submit" action="login"> Register </button>
+                <div class="regSection">
+                    <label class="form-label a ">First Name: <input id="first"  type="text"></label>
+                    <label class="form-label b">Last Name: <input id="last" type="text"></label>
+                    <label class="form-label c ">Phone Number: <input id="phone" type="text"></label>
+                    <label class="form-label d ">Date of Birth: <input id="dob" type="text"></label>
+                </div>
+                <button type="button" (click)="register()"> Register </button>
 
             </form>
             

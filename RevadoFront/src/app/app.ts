@@ -1,8 +1,9 @@
-import { Component, Output, signal } from '@angular/core';
+import { Component, Input, Output, signal } from '@angular/core';
 
 import { HomeComponent } from "./components/home/home";
 import { User } from './services/user-service';
 import { RouterOutlet } from '@angular/router';
+import { HttpClient } from '@angular/common/http';
 
 @Component({
   selector: 'app-root',
@@ -11,7 +12,7 @@ import { RouterOutlet } from '@angular/router';
   styleUrl: './app.css'
 })
 export class App {
-  @Output() loggedIn: User | null = null;
+
   protected readonly title = signal('RevadoFront');
 }
 

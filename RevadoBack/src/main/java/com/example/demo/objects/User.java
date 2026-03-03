@@ -4,33 +4,31 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.NonNull;
-import lombok.Setter;
+import lombok.*;
 import org.springframework.stereotype.Component;
 
 
+import java.io.Serializable;
 import java.util.Date;
-
- @Getter @Setter @NoArgsConstructor @Component @Entity
-public class User {
+@Entity
+ @Getter @Setter @NoArgsConstructor @Component  @ToString
+public class User implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private long uid;
- 
+     @NonNull
+     private String username;
     @NonNull
-    String password;
+    private String password;
     @NonNull
-    String email;
-    @NonNull
-    String username;
+    private String email;
 
-    String phone; 
-    Date dob;   
-    String first; 
-    String last;
+     private String dob;
 
+
+     private String first;
+     private String last;
+     private String phone;
 
 
 }

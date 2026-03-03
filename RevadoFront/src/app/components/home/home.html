@@ -1,19 +1,36 @@
-
-@if (loggedIn!= null)
+@if (injector.loggedIn() === null || injector.loggedIn() === undefined)
 {
-  <section>
-    <h1>Welcome, {{loggedIn.username}}!</h1>
-  </section>
-}
-@else
-{
-    <section>
+    @if(view===1)
+  {
+    <button (click)="goRegister()">Register</button>
+    <section id="login-sect">
         <p>An account is required to access this page. Please sign in or register.</p>  
-        <br>
-        <button routerLink="/register">Register</button>
-        <br>
-        <button routerLink="/login">Login</button>
+        <app-login></app-login>
        
     </section>
-    
+  }  
+  
+ @else if (view===2)
+  {
+    <button (click)="goLogin()">Back to Login</button>
+    <section id="class-sect">
+      <p>Please register for a new account.</p>
+      <app-register></app-register>
+      
+    </section>
+   }
 }
+@else if (injector.loggedIn() !== null)
+{
+ 
+ <section>
+    <h1>Welcome, {{ injector.loggedIn()?.username }}!</h1>
+    <app-tasks></app-tasks>
+  </section>
+}
+
+<!--
+ <button routerLink="/register">Register</button>
+        <br>
+        <button routerLink="/login">Login</button>
+-->
