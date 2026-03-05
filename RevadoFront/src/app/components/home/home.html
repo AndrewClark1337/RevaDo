@@ -1,3 +1,4 @@
+
 @if (injector.loggedIn() === null || injector.loggedIn() === undefined)
 {
     @if(view===1)
@@ -22,11 +23,34 @@
 }
 @else if (injector.loggedIn() !== null)
 {
- 
- <section>
+  <nav>
+    <button style="text-align: right;" (click)="goLogout()">Logout</button>
+  </nav>
+  <header>
     <h1>Welcome, {{ injector.loggedIn()?.username }}!</h1>
-    <app-tasks></app-tasks>
+  </header>
+  <section id="taskscreen">
+    @if(view===1)
+      {
+        <button (click)="goNewTask()">Create New Task</button>
+        <section id="taskscreen">
+          <h1>Welcome, {{ injector.loggedIn()?.username }}!</h1>
+          <app-tasks></app-tasks>
+        </section>
+      }
+      @if(view===2)
+      {
+        <button (click)="goTasks()">Back to Tasks</button>
+        <section id="newtaskscreen">
+          <h1>Create New Task</h1>
+          <app-newtask></app-newtask>
+        </section>
+      }
+ 
+    
+   
   </section>
+  
 }
 
 <!--

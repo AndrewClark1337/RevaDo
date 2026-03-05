@@ -6,11 +6,12 @@ import { LoginComponent } from "../login/login";
 import { RegisterComponent } from "../register/register";
 import { CommonModule } from '@angular/common';
 import { TaskComponent } from '../tasks/tasks';
+import { NewtaskComponent } from '../newtask/newtask';
 
 
 @Component({
   selector: 'app-home',
-  imports: [ TaskComponent,LoginComponent, RegisterComponent, CommonModule],
+  imports: [ TaskComponent,LoginComponent, RegisterComponent, CommonModule, NewtaskComponent],
   templateUrl: './home.html',
   styleUrl: './home.css',
   changeDetection:ChangeDetectionStrategy.Default
@@ -25,6 +26,10 @@ export class HomeComponent {
  
   view=views.LOGIN;
 
+  goLogout() {
+    this.injector.logout();
+    this.view = views.LOGIN;
+  }
   goLogin() {
     this.view = views.LOGIN;
     console.log("value of loggedin:", this.injector.loggedIn());
@@ -35,9 +40,16 @@ export class HomeComponent {
     loggedIn() {
     return this.injector.loggedIn();
   }
+  goTasks() {
+    this.view = views.TASKS;
+  }
+  goNewTask() {
+    this.view = views.NEWTASK;
+  }
 }
   
 enum views {
     LOGIN= 1,
-    REGISTER=2
-  }
+    REGISTER=2,
+    TASKS=1,
+    NEWTASK=2  }

@@ -1,41 +1,62 @@
 package com.example.demo.objects;
 
 
+import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NonNull;
 import lombok.Setter;
 import org.springframework.beans.factory.annotation.Autowired;
+
 import org.springframework.stereotype.Component;
 import com.example.demo.objects.User;
 //import javax.persistence.GeneratedValue;
 //import javax.persistence.GenerationType;
-//import javax.persistence.Id;
+import java.io.Serializable;
+import java.sql.Date;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 
-@Component  @Getter @Setter
-public class Task {
-  // @Id
-    //@GeneratedValue(strategy = GenerationType.AUTO)
-    private long tId;
+@Entity @Getter @Setter
+public class Task implements Serializable {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    private Long tid;
+
     int priority;
+
     @NonNull
-    String stage;
+    int stage;
 
-    @NonNull  @Getter @Setter
-    User owner;
+    @NonNull
+    @ManyToOne(fetch = FetchType.LAZY)           // ← changed to ManyToOne (more natural)
+    @JoinColumn(name = "owner", nullable = false)
+    private User owner;
 
-
+    @ManyToOne(fetch = FetchType.LAZY)           // optional assigned user
+    @JoinColumn(name = "assigned", nullable = true)
+    private User assigned;
     String description;
     
- @NonNull
-    String title;
     @NonNull
-    LocalDateTime createDate;
- 
-    LocalDateTime dueDate;
+    String title;
+    @Column(name = "create_date")
+    LocalDate createDate;
+    @Column(name="due_date")
+    LocalDate dueDate;
+    @Column(name="update_date")
+    LocalDate updateDate;
+    @PrePersist
+    protected void onCreate() {
 
-    LocalDateTime updateDate;
+            this.createDate = LocalDate.now();
+
+    }
+    @PreUpdate
+    protected void onUpdate() {
+        this.updateDate = LocalDate.now();
+    }
     /*
     public Task(String title,int pri, String stage, User o)
     {

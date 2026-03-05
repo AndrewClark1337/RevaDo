@@ -25,10 +25,12 @@ export class RegisterComponent {
   
     let first: string  = (document.getElementById("first") as HTMLInputElement).value;
     let last: string  = (document.getElementById("last") as HTMLInputElement).value;
-    let dob:string = (document.getElementById("dob") as HTMLInputElement).value;
+    let dob: Date = new Date((document.getElementById("dob") as HTMLInputElement).value);
     let phone: string  = (document.getElementById("phone") as HTMLInputElement).value;
     if (pass === conf){
+      try{
 
+      
       let user: User = {username: uname, password: pass, email: email, 
         first: first, last: last, dob: dob, phone: phone};
         console.log("User registered:", user);
@@ -36,6 +38,11 @@ export class RegisterComponent {
         this.injector.registerUser(user);
         msg.innerText = "User registered successfully!";
        console.log("User registered successfully!");
+      }
+      catch(error)      {
+        msg.innerText = "Error registering user. Please try again.";
+        console.error("Error registering user:", error);
+      }
 
     } else {
       
