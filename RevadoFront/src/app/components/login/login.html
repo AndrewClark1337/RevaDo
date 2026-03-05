@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <script src="./login.ts"></script>
+        <link rel="stylesheet" href="login.css">
+    </head>
+    <body>
+        <header>
+            Log In:
+        </header>
+        <section id="login-sect">
+           
+            <form id="loginForm" (ngSubmit)="login()"> 
+                <label class="form-label">Username: </label><input id="uname" type="text">
+                <br>
+                <label class="form-label">Password: </label><input id="pass" type="password">
+                <br>
+                <button type="submit" > Login </button>
+
+            </form>
+            
+        </section>
+      
+    </body>
+</html>

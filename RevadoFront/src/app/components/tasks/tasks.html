@@ -1,0 +1,90 @@
+<header>
+    <h1>Task Management</h1>
+</header>
+<section id="taskdisplay">
+
+    <div class="a">
+        <title class="divtitle">Backlog</title>
+        <ul id="backlog" class="tasklist">
+        @if(backlog().length===0)
+            {
+                <p>No tasks currently in backlog.</p>
+            }
+            @else
+            {
+
+                @for(t of backlog(); track t.title)
+                {
+                    <li class="task">
+                        <h2>{{t.title}}</h2>
+                    
+                    </li>
+                }
+            }
+        </ul>
+    </div>
+    <div class="b">
+        <title class="divtitle">In Progress</title>
+        <ul id="inProgress" class="tasklist">
+            @if(inProgress().length===0)
+            {
+                <p>No tasks currently in progress.</p>
+            }
+            @else
+            {
+
+                @for(t of inProgress(); track t.title)
+                {
+                    <li class="task">
+                        <h2>{{t.title}}</h2>
+                    
+                    </li>
+                }
+            }
+       
+        </ul>
+    </div>
+        
+        
+    <div class="c">
+        <title class="divtitle">Waiting for Approval</title>
+        <ul id="approval" class="tasklist">
+         @if(approval().length===0)
+            {
+                <p>No tasks currently waiting for approval.</p>
+            }
+            @else
+            {
+
+                @for(t of approval(); track t.title)
+                {
+                    <li class="task">
+                        <h2>{{t.title}}</h2>
+                    
+                    </li>
+                }
+            }
+        </ul>
+    </div>
+        
+    <div class="d">
+        <title class="divtitle">Completed</title>
+        <ul id="completed" class="tasklist">
+         @if(completed().length===0)
+            {
+                <p>No tasks currently completed.</p>
+            }
+            @else
+            {
+
+                @for(t of completed(); track t.title)
+                {
+                    <li class="task">
+                        <h2>{{t.title}}</h2>
+                    
+                    </li>
+                }
+            }
+        </ul>
+    </div>
+</section>

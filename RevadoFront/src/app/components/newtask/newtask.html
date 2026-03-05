@@ -1,0 +1,46 @@
+
+	<div class="container">
+		<h1>Create Task</h1>
+		<form id="create-task-form" #taskForm="ngForm" (ngSubmit)="createTask(taskForm)">
+			<label for="title">Title
+			    <input id="title" name="title" type="text" ngModel required />
+            </label>
+            <br>
+			<label for="description">Description
+			<textarea id="description" name="description" rows="5" ngModel></textarea></label>
+                <br>
+			<label for="dueDate">Due date
+			<input id="dueDate" name="dueDate" type="date" ngModel/></label>
+                <br>
+			<label for="priority">Priority
+			<select id="priority" name="priority" ngModel>
+				<option value="5">Negligible</option>
+                <option value="4">Low</option>
+				<option value="3" selected>Medium</option>
+                <option value="2">High</option>
+				<option value="1">Critical</option>
+			</select></label>
+            <br>
+            <label for="assigned">Assignee
+			<select id="assigned" name="assigned" ngModel>
+				
+                @if(usernames().size>0)
+                {
+                    <option value="0" selected>Unassigned</option>
+                    @for( u of usernames().entries() ; track u[0])
+                    {
+                        <option value="{{u[1]}}">{{u[0]}}</option>
+                    }
+                }
+               @else {
+                <option value="">No users available</option>
+               }
+			</select>
+        </label>
+        <br>
+			<button type="submit" >Create</button>
+		</form>
+		<div class="message" id="message" role="status" aria-live="polite"></div>
+	</div>
+  
+

@@ -1,0 +1,60 @@
+
+@if (injector.loggedIn() === null || injector.loggedIn() === undefined)
+{
+    @if(view===1)
+  {
+    <button (click)="goRegister()">Register</button>
+    <section id="login-sect">
+        <p>An account is required to access this page. Please sign in or register.</p>  
+        <app-login></app-login>
+       
+    </section>
+  }  
+  
+ @else if (view===2)
+  {
+    <button (click)="goLogin()">Back to Login</button>
+    <section id="class-sect">
+      <p>Please register for a new account.</p>
+      <app-register></app-register>
+      
+    </section>
+   }
+}
+@else if (injector.loggedIn() !== null)
+{
+  <nav>
+    <button style="text-align: right;" (click)="goLogout()">Logout</button>
+  </nav>
+  <header>
+    <h1>Welcome, {{ injector.loggedIn()?.username }}!</h1>
+  </header>
+  <section id="taskscreen">
+    @if(view===1)
+      {
+        <button (click)="goNewTask()">Create New Task</button>
+        <section id="taskscreen">
+          <h1>Welcome, {{ injector.loggedIn()?.username }}!</h1>
+          <app-tasks></app-tasks>
+        </section>
+      }
+      @if(view===2)
+      {
+        <button (click)="goTasks()">Back to Tasks</button>
+        <section id="newtaskscreen">
+          <h1>Create New Task</h1>
+          <app-newtask></app-newtask>
+        </section>
+      }
+ 
+    
+   
+  </section>
+  
+}
+
+<!--
+ <button routerLink="/register">Register</button>
+        <br>
+        <button routerLink="/login">Login</button>
+-->
