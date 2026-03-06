@@ -24,6 +24,7 @@ public class UserController {
     public UserController(UserService userService) {
         this.userService = userService;
     }
+
     @GetMapping("/login")
     public ResponseEntity<User> login(@RequestParam String username, @RequestParam String password)
     {
@@ -76,6 +77,7 @@ public class UserController {
 
 
     }
+
     @GetMapping("/getusers")
     public ResponseEntity<Map<String, Long>> getUsernames()
     {

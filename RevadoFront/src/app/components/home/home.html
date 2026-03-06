@@ -1,4 +1,4 @@
-
+<div id="view">
 @if (injector.loggedIn() === null || injector.loggedIn() === undefined)
 {
     @if(view===1)
@@ -24,7 +24,7 @@
 @else if (injector.loggedIn() !== null)
 {
   <nav>
-    <button style="text-align: right;" (click)="goLogout()">Logout</button>
+    <button  (click)="goLogout()">Logout</button>
   </nav>
   <header>
     <h1>Welcome, {{ injector.loggedIn()?.username }}!</h1>
@@ -52,7 +52,7 @@
   </section>
   
 }
-
+</div>
 <!--
  <button routerLink="/register">Register</button>
         <br>
