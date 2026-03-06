@@ -5,16 +5,22 @@ import { User } from './user-service';
   providedIn: 'root',
 })
 export class TaskService {
-  async getAllTasks(): Promise<Task[]|null> {
+  async getAllTasks(id:number): Promise<Task[]|null> {
     try{
+      const params = new URLSearchParams();
+      params.append('id',id.toString()); 
       console.log("calling getAllTasks");
-      var response=await fetch("http://localhost:8081/gettasks",{
+      var response=await fetch(`http://localhost:8081/gettasks?${params.toString()}`,{
         method: "GET"
       });
       //var resp = await response.json();
       console.log("Tasks received:", response);
-    
-      return response.ok ? await response.json() : null;
+      if (response.body==null){
+        return null;
+      }
+      else{
+        return await response.json();
+      }
     }
     catch(error)
     {
@@ -73,10 +79,10 @@ export class TaskService {
     console.log("Creating subtask with params:", params.toString());
     const response = await fetch(`http://localhost:8081/newtask?${params.toString()}`, {
       method: 'POST',
-    }
-   ).catch(error => {
-      console.error("Error creating subtask:", error);
     });
+    const r = await response.json();
+    console.log("Create subtask response:", r);
+   
   }
 
   async getTaskById(tid: number): Promise<Task> {

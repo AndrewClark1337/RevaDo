@@ -1,1 +1,28 @@
-<p>update works!</p>
+
+	<div class="container">
+		<h1>Update Task</h1>
+		<form id="create-task-form" #taskForm="ngForm" (ngSubmit)="updateTask(taskForm)">
+			<label for="title">Title
+			    <input id="title" name="title" type="text" value="{{ selectedTask().title }}" ngModel required >
+            </label>
+            <br>
+			<label for="description">Description
+			<textarea id="description" name="description" rows="5" value="{{  selectedTask().description }}" ngModel></textarea></label>
+                <br>
+			
+			<label for="priority">Priority
+			<select id="priority" name="priority" ngModel>
+                <option value="{{ selectedTask().priority }}" selected >Keep Previous ({{ selectedTask().priority }})</option>
+				<option value="5">5 - Negligible</option>
+                <option value="4">4 - Low</option>
+				<option value="3" selected>3 - Medium</option>
+                <option value="2">2 - High</option>
+				<option value="1">1 - Critical</option>
+			</select></label>
+            <br>
+		
+        <br>
+			<button type="submit" >Update Task</button>
+		</form>
+		<div class="message" id="message" role="status" aria-live="polite"></div>
+	</div>

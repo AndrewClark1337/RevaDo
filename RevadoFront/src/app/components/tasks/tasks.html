@@ -2,122 +2,76 @@
     <h1>Task Management</h1>
 </header>
 <section id="taskdisplay">
-
+   
     <h2>Tasks</h2>
     <div class="task-list">
         @if (view == 0)
         {
-            @for(task of tasks(); track task.tid)
+            <nav>
+                <button class="refresh" (click)="refreshTasks()">Refresh Tasks</button>
+            </nav>
+            @if(tasks().length === 0)
             {
-                
-                @if(task.completed)
+                <p>No tasks found. Please create a new task.</p>
+            }
+             @else
+             {
+                @for(task of tasks(); track task.tid)
                 {
-                <div class="task-item" style="background-color: lime;" >
-                    <div class="task-text">
-                    <strong>{{ task.title }}</strong>
-                    <br>
-                    <p>{{ task.description }}</p>
-                    <br>
-                    <p>Owner: {{ task.owner.username }}</p>
-                    <br>
-                    <p>Priority: {{ task.priority }}</p>
-                    </div>
-                    <button class="task-button" *ngIf="task.tid" (click)="deleteTask(task.tid!)">Delete</button>
-                    <br>
-                @if(task.subtasks && task.subtasks.length > 0 )
-                        {<h4>Subtasks:</h4>
-                            <div class="subtask-list">
-                                
-                                <ul>
-                                    @for(subtask of task.subtasks; track subtask.tid)
-                                    {
-                                        @if(subtask.completed)
-                                        {
-                                            <div class="subtask-item">
-                                            <li class="subtask-text" style="background-color: lime;">
-                                                <strong>{{ subtask.title }}</strong>
-                                                <br>
-                                                <p>{{ subtask.description }}</p>
-                                                <br>
-                                                <p>Owner: {{ subtask.owner.username }}</p>
-                                                <br>
-                                                <p>Priority: {{ subtask.priority }}</p>
-                                            </li>
-                                            <button class="subtask-button" (click)="deleteTask(subtask!.tid!)">Delete</button>
-                                            </div>
-                                        }
-                                        @else
-                                        {
-                                            <div class="subtask-item">
-                                            <li class="subtask-text" style="background-color: antiquewhite;">
-                                                <strong>{{ subtask.title }}</strong>
-                                                <br>
-                                                <p>{{ subtask.description }}</p>
-                                                <br>
-                                                <p>Owner: {{ subtask.owner.username }}</p>
-                                                <br>
-                                                <p>Priority: {{ subtask.priority }}</p>
-                                                
-                                            </li>
-                                            <button class="subtask-button"  (click)="completeTask(subtask!.tid!)">Complete</button>
-                                            <button class="subtask-button" (click)="deleteTask(subtask!.tid!)">Delete</button>
-                                            </div>
-                                        }
-                                    }
-                                </ul>
-                            </div>
-                            
-                        }
-                </div>   
-                }
-                
-                @else if (!task.completed) {
-                    <div class="task-item" style="background-color: antiquewhite;" >
+                    
+                    @if(task.completed)
+                    {
+                    <div class="task-item" style="background-color: lime;" >
                         <div class="task-text">
-                            <strong>{{ task.title }}</strong>
-                            <br>
-                            <p>{{ task.description }}</p>
-                            <br>
-                            <p>Owner: {{ task.owner.username }}</p>
-                            <br>
-                            <p>Priority: {{ task.priority }}</p>
-                        </div>
-                            <button class="task-button" *ngIf="task.tid" (click)="completeTask(task.tid!)">Complete</button>
-                        <button class="task-button" *ngIf="task.tid" (click)="deleteTask(task.tid!)">Delete</button>
-                        
-                        
-                        <!--<button class="subtask" (ngClick)="createSubtask(task.tid!)">Create Subtask</button>
-                    -->
+                        <strong>{{ task.title }}</strong>
                         <br>
-                        @if(task.subtasks && task.subtasks.length > 0 )
-                        {
-                            <div class="subtask-list">
-                                <h4>Subtasks:</h4>
+                        <p>{{ task.description }}</p>
+                        <br>
+                        <p>Owner: {{ task.owner.username }}</p>
+                        <br>
+                        <p>Priority: {{ task.priority }}</p>
+                        </div>
+                        <nav class="task-buttons">
+                            
+                        <button class="task-button delete" *ngIf="task.tid" (click)="deleteTask(task.tid!)">Delete</button>
+                        <br>
+                        <button class="task-button update" (click)="toUpdateTask(task!)">Update</button> 
+
+                    </nav>
+                        <br>
+                    @if(task.subtasks && task.subtasks.length > 0 )
+                            {
                                 
-                                <ul>
-                                    @for(subtask of task.subtasks; track subtask.tid)
-                                    {
-                                    @if(view==0)
-                                    {
+                                <div class="subtask-list" >
+                                    <h4  >Subtasks:</h4>
+                                     <br>
+                                    <ul>
+                                        @for(subtask of task.subtasks; track subtask.tid)
+                                        {
                                             @if(subtask.completed)
                                             {
-                                                <div class="subtask-item">
-                                                <li class="subtask-text" style="background-color: lime;">
-                                                    <strong>{{ subtask.title }}</strong>
+                                                <div class="subtask-item"style="background-color: lime;">
+                                                    <li class="subtask-text" >
+                                                        <strong>{{ subtask.title }}</strong>
+                                                        <br>
+                                                        <p>{{ subtask.description }}</p>
+                                                        <br>
+                                                        <p>Owner: {{ subtask.owner.username }}</p>
+                                                        <br>
+                                                        <p>Priority: {{ subtask.priority }}</p>
+                                                    </li>
+                                                    <nav class="subtask-buttons">
+                                                    <button class="subtask-button delete" (click)="deleteTask(subtask!.tid!)">Delete</button>
                                                     <br>
-                                                    <p>{{ subtask.description }}</p>
-                                                    <br>
-                                                    <p>Owner: {{ subtask.owner.username }}</p>
-                                                    <br>
-                                                    <p>Priority: {{ subtask.priority }}</p>
-                                                </li>
-                                                <button class="subtask-button" (click)="deleteTask(subtask!.tid!)">Delete</button>
+                                                    <button class="subtask-button update" (click)="toUpdateTask(subtask!)">Update</button> 
+                                                    </nav>
+                              
                                                 </div>
                                             }
                                             @else
                                             {
-                                                <div class="subtask-item">
-                                                <li class="subtask-text" style="background-color: antiquewhite;">
+                                                <div class="subtask-item"style="background-color: antiquewhite;">
+                                                <li class="subtask-text" >
                                                     <strong>{{ subtask.title }}</strong>
                                                     <br>
                                                     <p>{{ subtask.description }}</p>
@@ -127,31 +81,116 @@
                                                     <p>Priority: {{ subtask.priority }}</p>
                                                     
                                                 </li>
-                                                <button class="subtask-button"  (click)="completeTask(subtask!.tid!)">Complete</button>
-                                               <!-- <button class="subtask-button" (click)="updateTask(subtask!.tid!)">Update</button>
-                                                <button class="subtask-button" (click)="deleteTask(subtask!.tid!)">Delete</button>-->
+                                                  <nav class="subtask-buttons">
+
+                                                    <button class="subtask-button complete"  (click)="completeTask(subtask!.tid!)">Complete</button>
+                                                    <button class="subtask-button update" (click)="toUpdateTask(subtask!)">Update</button> 
+                                                    <button class="subtask-button delete" (click)="deleteTask(subtask!.tid!)"> Delete</button>
+                                                        </nav>
                                                 </div>
-                                            
                                             }
                                         }
-                                    
-                                        
-                                    }
-                                </ul>
-                            </div>
-                        }
+                                    </ul>
+                                </div>
+                                
+                            }
+                    </div>   
+                    }
                     
-                    </div>
+                    @else if (!task.completed) {
+                        <div class="task-item" style="background-color: antiquewhite;" >
+                            <div class="task-text">
+                                <strong>{{ task.title }}</strong>
+                                <br>
+                                <p>{{ task.description }}</p>
+                                <br>
+                                <p>Owner: {{ task.owner.username }}</p>
+                                <br>
+                                <p>Priority: {{ task.priority }}</p>
+                            </div>
+                            <nav class="task-buttons">
+                                <button class="task-button complete" *ngIf="task.tid" (click)="completeTask(task.tid!)">Complete</button>
+                            <button class="task-button delete" *ngIf="task.tid" (click)="deleteTask(task.tid!)">Delete</button>
+                            <button class="task-button update" (click)="toUpdateTask(task!)">Update</button> 
+                            </nav>
+                            <!--<button class="subtask" (ngClick)="createSubtask(task.tid!)">Create Subtask</button>
+                        -->
+                            <br>
+                            @if(task.subtasks && task.subtasks.length > 0 )
+                            {
+                                <div class="subtask-list">
+                                    <strong>Subtasks:</strong>
+                                    
+                                    <ul>
+                                        @for(subtask of task.subtasks; track subtask.tid)
+                                        {
+                                        @if(view==0)
+                                        {
+                                                @if(subtask.completed)
+                                                {
+                                                    <div class="subtask-item"style="background-color: lime;">
+                                                    <li class="subtask-text" >
+                                                        <strong>{{ subtask.title }}</strong>
+                                                        <br>
+                                                        <p>{{ subtask.description }}</p>
+                                                        <br>
+                                                        <p>Owner: {{ subtask.owner.username }}</p>
+                                                        <br>
+                                                        <p>Priority: {{ subtask.priority }}</p>
+                                                    </li>
+                                                    <nav class="subtask-buttons">
+                                                  <button class="subtask-button delete" (click)="deleteTask(subtask!.tid!)">Delete</button>
+                                                <button class="subtask-button update" (click)="toUpdateTask(subtask!)">Update</button> 
+                                                </nav>
+                                                    </div>
+                                                }
+                                                @else
+                                                {
+                                                    <div class="subtask-item">
+                                                    <li class="subtask-text" style="background-color: antiquewhite;">
+                                                        <strong>{{ subtask.title }}</strong>
+                                                        <br>
+                                                        <p>{{ subtask.description }}</p>
+                                                        <br>
+                                                        <p>Owner: {{ subtask.owner.username }}</p>
+                                                        <br>
+                                                        <p>Priority: {{ subtask.priority }}</p>
+                                                        
+                                                    </li>
+                                                    <nav class="subtask-buttons">
+
+                                                    <button class="subtask-button complete"  (click)="completeTask(subtask!.tid!)">Complete</button>
+                                                    <button class="subtask-button update" (click)="toUpdateTask(subtask!)">Update</button> 
+                                                    <button class="subtask-button delete" (click)="deleteTask(subtask!.tid!)"> Delete</button>
+                                                        </nav>
+                                                </div>
+                                                
+                                                }
+                                            }
+                                        
+                                            
+                                        }
+                                    </ul>
+                                </div>
+                            }
+                        
+                        </div>
+                    }
+                    <button class="task-button subtask" (click)="toSubtask(task)">Create Subtask</button>    
                 }
-                <button class="task-button" (click)="toSubtask(task)">Create Subtask</button>    
+                
             }
-            
         }
         @else if(view==1)
         {
             <button class="task-button" style="width:25%;" (click)="back()">Back to Tasks</button>
             <app-subtask (viewChange)="changeView($event)" [parentId]="selectedTask()!"></app-subtask>
             
+        }
+        @else if(view==2)
+        {
+            <button class="task-button" style="width:25%;" (click)="back()">Back to Tasks</button>
+            <app-update (viewChange)="changeView($event)" [taskId]="selectedTask()!"></app-update>
         }
         
     </div>

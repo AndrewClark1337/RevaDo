@@ -18,9 +18,9 @@ public class TaskService {
         this.taskRepository = taskRepository;
     }
 
-    public List<Task> getAll(){
+    public List<Task> getAll(Long id){
         Sort sort = Sort.by(Sort.Direction.ASC, "priority");
-        return  taskRepository.findAllTasks(sort);
+        return  taskRepository.findAllTasksByOwner(sort,id );
     }
     public Task createTask(Task task){
         taskRepository.saveAndFlush(task);
@@ -40,7 +40,7 @@ public class TaskService {
     }
     public List<Task> findSubtasks(Long id){
         Sort sort = Sort.by(Sort.Direction.ASC, "priority");
-        return  taskRepository.findTasksByParent(sort, id);
+        return  taskRepository.findAllTasksByOwner(sort, id);
     }
     public void delete(Long id){
         taskRepository.deleteById(id);

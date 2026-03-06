@@ -13,7 +13,7 @@ export class SubtaskComponent {
   @Input() parentId: number = 0;
   @Output() viewChange = new EventEmitter<number>();
   constructor(private tService: TaskService, private uService: UserService) {}
-  async createSubtask(form: any) {
+   async createSubtask(form: any) {
     const parentTask: Task = await this.tService.getTaskById(this.parentId);
     const t: Task = {
       title: form.value.title,

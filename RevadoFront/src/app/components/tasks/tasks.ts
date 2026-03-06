@@ -1,13 +1,15 @@
-import { Component, Injector, Input, Output, signal } from '@angular/core';
+import { Component, effect, Injector, Input, Output, signal } from '@angular/core';
 import { Task, TaskService } from '../../services/task-service';
 import { NewtaskComponent } from "../newtask/newtask";
 import { Router, RouterOutlet } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { SubtaskComponent } from '../subtask/subtask';
+import { UpdateComponent } from '../update/update';
+import { UserService } from '../../services/user-service';
 
 @Component({
   selector: 'app-tasks',
-  imports: [CommonModule, NewtaskComponent, SubtaskComponent], 
+  imports: [CommonModule, NewtaskComponent, SubtaskComponent, UpdateComponent], 
   templateUrl: './tasks.html',
   styleUrl: './tasks.css',
 })
@@ -16,9 +18,11 @@ export class TaskComponent {
   tasks = signal<Array<Task>>([]);
   selectedTask=signal<number|undefined>(0);
   @Input() view: number = 0;
-  constructor(private tService: TaskService) {
-    this.tService=tService
+  constructor(private tService: TaskService, private uService: UserService) {
+    this.tService=tService;
+     effect(() => {
     this.getTasks();
+    });
     
   }
   async completeTask(id: number) {
@@ -32,6 +36,10 @@ export class TaskComponent {
 
     this.tService.createTask(t);
   }
+  refreshTasks() {
+    console.log("Refreshing tasks...");
+    this.getTasks();
+  }
   changeView(view: number) {
     this.view=view;
     console.log("Changing view to:", view);
@@ -39,6 +47,7 @@ export class TaskComponent {
   }
   toUpdateTask(task: Task) {
     this.view=2;
+    console.log("Selected task for update:", task.tid);
     this.selectedTask.set(task.tid);
   }
   toSubtask(task: Task) {
@@ -52,12 +61,17 @@ export class TaskComponent {
   }
   async getTasks(){
     try{
-      var tasks:Array<Task>|null = await this.tService.getAllTasks(); 
+      var response: Task[] | null = await this.tService.getAllTasks(this.uService.loggedIn()?.uid ?? 0); 
       console.log("Tasks in component:");
-      for(const task of tasks ?? []) {
-        console.log("- ", task);
+      if(response!= null)
+      {
+         for(let t of response ?? []) {
+        console.log(t);
       }
-      this.tasks.set(tasks ?? []);
+      }
+     
+
+      this.tasks.set(response ?? []);
        
       
     }

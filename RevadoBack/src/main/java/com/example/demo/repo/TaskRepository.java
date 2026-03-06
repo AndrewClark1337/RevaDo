@@ -19,9 +19,9 @@ public interface TaskRepository extends JpaRepository<Task,Long> {
     @Query("UPDATE Task t SET t.completed = true WHERE t.tid = :id") @Modifying
     void completeTask(Long id);
 
-    @Query("SELECT t FROM Task t WHERE t.parent IS NULL")
-    List<Task> findAllTasks(Sort sort);
+    @Query("SELECT t FROM Task t WHERE t.parent IS NULL AND t.owner.uid = :id")
+    List<Task> findAllTasksByOwner(Sort sort, Long id);
 
-    List<Task> findTasksByParent(Sort sort, Long id);
-    void deleteTasksByTid(Long id);
+
+
 }

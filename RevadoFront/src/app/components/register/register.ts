@@ -1,7 +1,8 @@
-import { Component, inject } from '@angular/core';
+import { Component, EventEmitter, inject, Output } from '@angular/core';
 import { UserService,User } from '../../services/user-service';
 import { RouterLink } from '@angular/router';
 import { HttpClientModule } from '@angular/common/http';
+import { views } from '../home/home';
 
 
 
@@ -12,6 +13,7 @@ import { HttpClientModule } from '@angular/common/http';
   styleUrl: './register.css',
 })
 export class RegisterComponent {
+  @Output() viewChange = new EventEmitter<number>();
   constructor() {
   }
   injector = inject(UserService);
@@ -38,6 +40,7 @@ export class RegisterComponent {
         this.injector.registerUser(user);
         msg.innerText = "User registered successfully!";
        console.log("User registered successfully!");
+        this.viewChange.emit(views.LOGIN);
       }
       catch(error)      {
         msg.innerText = "Error registering user. Please try again.";

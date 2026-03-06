@@ -21,10 +21,15 @@ public class TaskController {
         this.userService = userService;
     }
     @GetMapping("/gettasks")
-    public ResponseEntity<List<Task>> getTasks()
+    public ResponseEntity<List<Task>> getTasks(@RequestParam Long id)
     {
-
-        return ResponseEntity.ok(taskService.getAll());
+        List<Task> tasks = taskService.getAll(id);
+        if (tasks.isEmpty()) {
+            return ResponseEntity.ok(null);
+        }
+        else {
+            return ResponseEntity.ok(tasks);
+        }
     }
 
     @GetMapping("/getsubtasks")
@@ -36,17 +41,18 @@ public class TaskController {
     @PostMapping("/newtask")
     public ResponseEntity<Task> newTask(@RequestParam String title, @RequestParam(required = false) String description,
                         @RequestParam int priority, @RequestParam boolean completed, @RequestParam Long owner, @RequestParam(required = false) Long parent) {
-        System.out.println("Creating task");
+
         Task t = new Task();
         t.setTitle(title);
         t.setDescription(description);
         t.setPriority(priority);
         t.setCompleted(completed);
-        if(parent != null) {
+        if(parent!=null) {
             t.setParent(this.taskService.getById(parent));
+            System.out.println(t.getParent());
         }
         t.setOwner(this.userService.findUser(owner));
-        Map<String,Object> map = new HashMap<>();
+        System.out.println("Creating task: "+t);
         return ResponseEntity.ok(taskService.createTask(t));
     }
     @PutMapping("/editTask")
@@ -103,7 +109,10 @@ public class TaskController {
         task.setPriority(priority);
         task.setCompleted(completed);
         task.setOwner(this.userService.findUser(owner));
-        if(parent != null) {task.setParent(this.taskService.getById(parent));}
+        if(parent != null) {
+            task.setParent(this.taskService.getById(parent));
+            System.out.println("Parent: "+task.getParent());
+        }
         try
         {
             taskService.updateTask(task);

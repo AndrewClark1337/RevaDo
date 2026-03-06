@@ -24,7 +24,7 @@ export class HomeComponent {
   }
   enum: typeof views = views;
  
-  view=views.LOGIN;
+   @Input() view: number = 1;
 
   goLogout() {
     this.injector.logout();
@@ -48,7 +48,7 @@ export class HomeComponent {
   }
 }
   
-enum views {
+export enum views {
     LOGIN= 1,
     REGISTER=2,
     TASKS=1,
