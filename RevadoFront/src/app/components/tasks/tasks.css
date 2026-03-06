@@ -5,42 +5,91 @@
 }
 
 #taskdisplay {
-    display: grid;
+  
     width: 100%;
-    grid-template-columns: repeat(4, 1fr);
+  
     gap: 5px;
     
 }
-.a{
-     width: 100%;
+
+.task-item{
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    width:  90%;
+    border: 2px solid black;
+    padding:10px;
+    margin:5px;
+    border-radius: 10px;
+    align-items: left;
+    
+
+    
+    
+}
+.task-list{
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+.task-text{
     grid-column: 1;
-    background-color: lightblue;
+    font-size: 14px;
+    line-height: 1;
+    text-align: left;
+    width: 90%;
+    padding: 5px;
+    
 }
-.b{
-    width: 100%;
+.subtask-text{
+    
+    grid-row: 1 4;
+    font-size: 12px;
+    line-height: 1;
+    width: 60%;
+}
+.taskcomplete{
     grid-column: 2;
-    background-color: lightcoral;
+   
+   
+    
 }
-.c{
-     width: 100%;
-    grid-column: 3;
-    background-color: lightyellow;
+.subtask-list{
+    grid-row: 5;
+    grid-column: 1 2;
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
 }
-.d{
-     width: 100%;
-    grid-column: 4;
-    background-color: lightgreen;
-}
-.task {
-    width: 80%;
-    background-color: white;
+.subtask-item{
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    gap: 10px;
+    width:  90%;
     border: 1px solid black;
     padding:5px;
     margin: 5px;
     border-radius: 10px;
+    align-items: left;
+
 }
+
+.task-button{
+    grid-column: 2;
+    display: flex;
+    align-items: center;
+    margin: 10px;
+    width: 50%;
+    height: 30px;
+    text-align: center;
+}
+.subtask-button{
+    padding: 5px 10px;
+    font-size: 12px;
+    width: 20%;
+}
+
 li{
     list-style-type: none;
-    background-color: white;
+   
     
 }

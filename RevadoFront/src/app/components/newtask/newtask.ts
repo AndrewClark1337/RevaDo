@@ -27,20 +27,13 @@ export class NewtaskComponent {
       console.error('No logged in user or missing uid');
       return;
     }
-    console.log(values.assigned);
-    let v = values.assigned;
+   
      
       let owner: User= { username: currentUser.username, password: currentUser.password, email: currentUser.email, first: currentUser.first, last: currentUser.last, dob: currentUser.dob, phone: currentUser.phone, uid: currentUser.uid };
     console.log("Owner of the task:", owner);
-    if(v!=0)
-    {
-      var newTask: Task = { title: values.title, description: values.description, dueDate: new Date(values.dueDate), owner: owner, assigned: values.assigned, stage: 1, priority: values.priority };
-       
-    }
-    else
-    {
-       var newTask: Task = { title: values.title, description: values.description, dueDate: new Date(values.dueDate), owner: owner, stage: 1, priority: values.priority };
-    }
+  
+       var newTask: Task = { title: values.title, description: values.description, owner: owner, completed: false, priority: values.priority };
+    
     
     console.log("Creating task:", newTask);
     this.tService.createTask(newTask);

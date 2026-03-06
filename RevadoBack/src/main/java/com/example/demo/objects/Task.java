@@ -1,6 +1,9 @@
 package com.example.demo.objects;
 
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NonNull;
@@ -15,6 +18,8 @@ import java.io.Serializable;
 import java.sql.Date;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 
 @Entity @Getter @Setter
@@ -27,36 +32,27 @@ public class Task implements Serializable {
     int priority;
 
     @NonNull
-    int stage;
-
+    boolean completed;
     @NonNull
     @ManyToOne(fetch = FetchType.LAZY)           // ← changed to ManyToOne (more natural)
     @JoinColumn(name = "owner", nullable = false)
     private User owner;
 
-    @ManyToOne(fetch = FetchType.LAZY)           // optional assigned user
-    @JoinColumn(name = "assigned", nullable = true)
-    private User assigned;
+        // optional assigned user
     String description;
-    
+    @JsonBackReference
+    @ManyToOne(fetch = FetchType.LAZY)
+            @JoinColumn(name="parentid")
+    private Task parent;
+
     @NonNull
     String title;
-    @Column(name = "create_date")
-    LocalDate createDate;
-    @Column(name="due_date")
-    LocalDate dueDate;
-    @Column(name="update_date")
-    LocalDate updateDate;
-    @PrePersist
-    protected void onCreate() {
+    @JsonManagedReference
+    @OneToMany(mappedBy = "parent",
+            cascade = CascadeType.ALL,
+            orphanRemoval = true)
+    List<Task> subtasks = new ArrayList<>();
 
-            this.createDate = LocalDate.now();
-
-    }
-    @PreUpdate
-    protected void onUpdate() {
-        this.updateDate = LocalDate.now();
-    }
     /*
     public Task(String title,int pri, String stage, User o)
     {

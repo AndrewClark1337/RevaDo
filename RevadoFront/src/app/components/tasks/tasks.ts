@@ -1,71 +1,75 @@
-import { Component, Injector, signal } from '@angular/core';
+import { Component, Injector, Input, Output, signal } from '@angular/core';
 import { Task, TaskService } from '../../services/task-service';
 import { NewtaskComponent } from "../newtask/newtask";
+import { Router, RouterOutlet } from '@angular/router';
+import { CommonModule } from '@angular/common';
+import { SubtaskComponent } from '../subtask/subtask';
 
 @Component({
   selector: 'app-tasks',
-  imports: [NewtaskComponent],
+  imports: [CommonModule, NewtaskComponent, SubtaskComponent], 
   templateUrl: './tasks.html',
   styleUrl: './tasks.css',
 })
 export class TaskComponent {
   
-  backlog = signal<Task[]>([]);
-  inProgress= signal<Array<Task>>([]);
-  approval = signal<Array<Task>>([]);
-  completed = signal<Array<Task>>([]);
-
+  tasks = signal<Array<Task>>([]);
+  selectedTask=signal<number|undefined>(0);
+  @Input() view: number = 0;
   constructor(private tService: TaskService) {
     this.tService=tService
     this.getTasks();
     
   }
+  async completeTask(id: number) {
+    console.log("Completing task with id:", id);
+    await this.tService.completeTask(id);
+    this.getTasks();
+  }
    createTask(task: Task) {
-    
-    if(task.dueDate instanceof Date){
-      var t: Task= {title: task.title, description: task.description, dueDate: task.dueDate, owner: task.owner, assigned: task.assigned, stage: task.stage, priority: task.priority};
-    }
-    else
-    {       
-      var t : Task = {title: task.title, description: task.description, owner: task.owner, assigned: task.assigned, stage: task.stage, priority: task.priority};
-    }
-    
+          
+      var t : Task = {title: task.title, description: task.description, owner: task.owner, completed: task.completed, priority: task.priority};
+
     this.tService.createTask(t);
+  }
+  changeView(view: number) {
+    this.view=view;
+    console.log("Changing view to:", view);
+    this.getTasks();
+  }
+  toUpdateTask(task: Task) {
+    this.view=2;
+    this.selectedTask.set(task.tid);
+  }
+  toSubtask(task: Task) {
+    this.view=1;
+    this.selectedTask.set(task.tid);
+  }
+  back(){
+    this.view=0;
+    this.selectedTask.set(0);
+    this.getTasks();
   }
   async getTasks(){
     try{
       var tasks:Array<Task>|null = await this.tService.getAllTasks(); 
-      console.log("Tasks in component:", tasks);
-      this.backlog.set([]);
-        this.inProgress.set([]);
-        this.approval.set([]);
-        this.completed.set([]);
-      for (let t of tasks ?? [])    
-        {
-        switch(t.stage)
-        {
-          case 0:
-            console.log("Adding to backlog:", t);
-            this.backlog.update(arr=>[...arr, t]);
-            break;
-          case 1:
-            console.log("Adding to inProgress:", t);
-            this.inProgress.update(arr=>[...arr, t] );
-            break;
-          case 2:
-            console.log("Adding to approval:", t);
-            this.approval.update(arr=>[...arr, t]);
-            break;
-          case 3:
-            console.log("Adding to completed:", t);
-            this.completed.update(arr=>[...arr, t]);
-            break;
-        }
+      console.log("Tasks in component:");
+      for(const task of tasks ?? []) {
+        console.log("- ", task);
       }
+      this.tasks.set(tasks ?? []);
+       
+      
     }
     catch(error)
     {
       console.error("Error fetching tasks:", error);
     }  
+  }
+
+  async deleteTask(id: number) {
+    console.log("Deleting task with id:", id);
+    await this.tService.deleteTask(id);
+    this.getTasks();
   }
 }

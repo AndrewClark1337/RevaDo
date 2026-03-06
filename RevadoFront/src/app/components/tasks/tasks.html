@@ -3,88 +3,156 @@
 </header>
 <section id="taskdisplay">
 
-    <div class="a">
-        <title class="divtitle">Backlog</title>
-        <ul id="backlog" class="tasklist">
-        @if(backlog().length===0)
+    <h2>Tasks</h2>
+    <div class="task-list">
+        @if (view == 0)
+        {
+            @for(task of tasks(); track task.tid)
             {
-                <p>No tasks currently in backlog.</p>
-            }
-            @else
-            {
-
-                @for(t of backlog(); track t.title)
+                
+                @if(task.completed)
                 {
-                    <li class="task">
-                        <h2>{{t.title}}</h2>
-                    
-                    </li>
+                <div class="task-item" style="background-color: lime;" >
+                    <div class="task-text">
+                    <strong>{{ task.title }}</strong>
+                    <br>
+                    <p>{{ task.description }}</p>
+                    <br>
+                    <p>Owner: {{ task.owner.username }}</p>
+                    <br>
+                    <p>Priority: {{ task.priority }}</p>
+                    </div>
+                    <button class="task-button" *ngIf="task.tid" (click)="deleteTask(task.tid!)">Delete</button>
+                    <br>
+                @if(task.subtasks && task.subtasks.length > 0 )
+                        {<h4>Subtasks:</h4>
+                            <div class="subtask-list">
+                                
+                                <ul>
+                                    @for(subtask of task.subtasks; track subtask.tid)
+                                    {
+                                        @if(subtask.completed)
+                                        {
+                                            <div class="subtask-item">
+                                            <li class="subtask-text" style="background-color: lime;">
+                                                <strong>{{ subtask.title }}</strong>
+                                                <br>
+                                                <p>{{ subtask.description }}</p>
+                                                <br>
+                                                <p>Owner: {{ subtask.owner.username }}</p>
+                                                <br>
+                                                <p>Priority: {{ subtask.priority }}</p>
+                                            </li>
+                                            <button class="subtask-button" (click)="deleteTask(subtask!.tid!)">Delete</button>
+                                            </div>
+                                        }
+                                        @else
+                                        {
+                                            <div class="subtask-item">
+                                            <li class="subtask-text" style="background-color: antiquewhite;">
+                                                <strong>{{ subtask.title }}</strong>
+                                                <br>
+                                                <p>{{ subtask.description }}</p>
+                                                <br>
+                                                <p>Owner: {{ subtask.owner.username }}</p>
+                                                <br>
+                                                <p>Priority: {{ subtask.priority }}</p>
+                                                
+                                            </li>
+                                            <button class="subtask-button"  (click)="completeTask(subtask!.tid!)">Complete</button>
+                                            <button class="subtask-button" (click)="deleteTask(subtask!.tid!)">Delete</button>
+                                            </div>
+                                        }
+                                    }
+                                </ul>
+                            </div>
+                            
+                        }
+                </div>   
                 }
-            }
-        </ul>
-    </div>
-    <div class="b">
-        <title class="divtitle">In Progress</title>
-        <ul id="inProgress" class="tasklist">
-            @if(inProgress().length===0)
-            {
-                <p>No tasks currently in progress.</p>
-            }
-            @else
-            {
-
-                @for(t of inProgress(); track t.title)
-                {
-                    <li class="task">
-                        <h2>{{t.title}}</h2>
+                
+                @else if (!task.completed) {
+                    <div class="task-item" style="background-color: antiquewhite;" >
+                        <div class="task-text">
+                            <strong>{{ task.title }}</strong>
+                            <br>
+                            <p>{{ task.description }}</p>
+                            <br>
+                            <p>Owner: {{ task.owner.username }}</p>
+                            <br>
+                            <p>Priority: {{ task.priority }}</p>
+                        </div>
+                            <button class="task-button" *ngIf="task.tid" (click)="completeTask(task.tid!)">Complete</button>
+                        <button class="task-button" *ngIf="task.tid" (click)="deleteTask(task.tid!)">Delete</button>
+                        
+                        
+                        <!--<button class="subtask" (ngClick)="createSubtask(task.tid!)">Create Subtask</button>
+                    -->
+                        <br>
+                        @if(task.subtasks && task.subtasks.length > 0 )
+                        {
+                            <div class="subtask-list">
+                                <h4>Subtasks:</h4>
+                                
+                                <ul>
+                                    @for(subtask of task.subtasks; track subtask.tid)
+                                    {
+                                    @if(view==0)
+                                    {
+                                            @if(subtask.completed)
+                                            {
+                                                <div class="subtask-item">
+                                                <li class="subtask-text" style="background-color: lime;">
+                                                    <strong>{{ subtask.title }}</strong>
+                                                    <br>
+                                                    <p>{{ subtask.description }}</p>
+                                                    <br>
+                                                    <p>Owner: {{ subtask.owner.username }}</p>
+                                                    <br>
+                                                    <p>Priority: {{ subtask.priority }}</p>
+                                                </li>
+                                                <button class="subtask-button" (click)="deleteTask(subtask!.tid!)">Delete</button>
+                                                </div>
+                                            }
+                                            @else
+                                            {
+                                                <div class="subtask-item">
+                                                <li class="subtask-text" style="background-color: antiquewhite;">
+                                                    <strong>{{ subtask.title }}</strong>
+                                                    <br>
+                                                    <p>{{ subtask.description }}</p>
+                                                    <br>
+                                                    <p>Owner: {{ subtask.owner.username }}</p>
+                                                    <br>
+                                                    <p>Priority: {{ subtask.priority }}</p>
+                                                    
+                                                </li>
+                                                <button class="subtask-button"  (click)="completeTask(subtask!.tid!)">Complete</button>
+                                               <!-- <button class="subtask-button" (click)="updateTask(subtask!.tid!)">Update</button>
+                                                <button class="subtask-button" (click)="deleteTask(subtask!.tid!)">Delete</button>-->
+                                                </div>
+                                            
+                                            }
+                                        }
+                                    
+                                        
+                                    }
+                                </ul>
+                            </div>
+                        }
                     
-                    </li>
+                    </div>
                 }
+                <button class="task-button" (click)="toSubtask(task)">Create Subtask</button>    
             }
-       
-        </ul>
-    </div>
+            
+        }
+        @else if(view==1)
+        {
+            <button class="task-button" style="width:25%;" (click)="back()">Back to Tasks</button>
+            <app-subtask (viewChange)="changeView($event)" [parentId]="selectedTask()!"></app-subtask>
+            
+        }
         
-        
-    <div class="c">
-        <title class="divtitle">Waiting for Approval</title>
-        <ul id="approval" class="tasklist">
-         @if(approval().length===0)
-            {
-                <p>No tasks currently waiting for approval.</p>
-            }
-            @else
-            {
-
-                @for(t of approval(); track t.title)
-                {
-                    <li class="task">
-                        <h2>{{t.title}}</h2>
-                    
-                    </li>
-                }
-            }
-        </ul>
-    </div>
-        
-    <div class="d">
-        <title class="divtitle">Completed</title>
-        <ul id="completed" class="tasklist">
-         @if(completed().length===0)
-            {
-                <p>No tasks currently completed.</p>
-            }
-            @else
-            {
-
-                @for(t of completed(); track t.title)
-                {
-                    <li class="task">
-                        <h2>{{t.title}}</h2>
-                    
-                    </li>
-                }
-            }
-        </ul>
     </div>
 </section>

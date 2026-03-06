@@ -1,7 +1,7 @@
 
 	<div class="container">
-		<h1>Create Task</h1>
-		<form id="create-task-form" #taskForm="ngForm" (ngSubmit)="createTask(taskForm)">
+		<h1>Create Subtask</h1>
+		<form id="create-subtask-form" #subtaskForm="ngForm" (ngSubmit)="createSubtask(subtaskForm)">
 			<label for="title">Title
 			    <input id="title" name="title" type="text" ngModel required />
             </label>
@@ -25,5 +25,3 @@
 		</form>
 		<div class="message" id="message" role="status" aria-live="polite"></div>
 	</div>
-  
-

@@ -2,6 +2,7 @@ package com.example.demo.services;
 
 import com.example.demo.objects.User;
 import com.example.demo.repo.UserRepository;
+import jakarta.transaction.Transactional;
 import lombok.NoArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
@@ -11,7 +12,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-
+@Transactional
 @Service
 public class UserService {
     private final UserRepository userRepository;
@@ -34,7 +35,7 @@ public class UserService {
 
     }
 
-    public User findUser(long id){
+    public User findUser(Long id){
 
         return userRepository.findByUid(id);
     }
