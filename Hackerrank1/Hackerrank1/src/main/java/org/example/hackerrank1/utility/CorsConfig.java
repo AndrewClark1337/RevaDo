@@ -1,4 +1,4 @@
-package com.example.demo.utility;
+package org.example.hackerrank1.utility;
 
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
@@ -10,7 +10,7 @@ public class CorsConfig implements WebMvcConfigurer {
     public void addCorsMappings(CorsRegistry registry) {
         registry.addMapping("/**")
                 .allowedOriginPatterns("http://localhost:5173")
-                .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS");
-    }
+                .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS", "PATCH");
 
+    }
 }
