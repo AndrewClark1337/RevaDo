@@ -3,9 +3,8 @@ import reactLogo from './assets/react.svg'
 import viteLogo from '/vite.svg'
 import './App.css'
 import Login from './components/login/login'
-import { UserService, User } from './services/user-service'
 import Register from './components/register/Register'
-import Task from './components/tasks/tasks'
+
 function App() {
   const [loggedIn, setLoggedIn] = useState<User| null>(null)
   const [view, setView] = useState<number>(1)
@@ -41,11 +40,34 @@ function App() {
   else  {
     return (
       <div>
-        <h1>Welcome, {loggedIn.username}!</h1>
-        <Task />
+        <h1 setLoggedIn={setLoggedIn} loggedIn={loggedIn}>Welcome, {loggedIn.username}!</h1>
+        <Tasks />
       </div>
     )
   }
 }
 
 export default App
+export interface User{
+    uid?: number,
+    username: string,
+    password: string,
+    email: string,
+    dob?: Date,
+    first?: string,
+    last?: string,
+    phone?: string
+
+   
+}
+
+export interface Task {
+  tid?: number,
+    title: string,
+    description?: string,
+    parent?: Task,
+    owner: User,
+    completed: boolean,
+    priority: number,
+    subtasks?: Task[],
+}

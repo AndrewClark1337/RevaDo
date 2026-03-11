@@ -2,15 +2,14 @@ import { useState } from 'react'
 import reactLogo from './assets/react.svg'
 import viteLogo from '/vite.svg'
 import './App.css'
-import AddBook from './components/addbook'
-import GetBooks from './components/getBooks'
+
+import BookGalleryComponent from './components/BookGalleryComponent'
 function App() {
  
 
   return (
     <>
-      <AddBook />
-      <GetBooks />
+      <BookGalleryComponent />
     </>
   )
 }

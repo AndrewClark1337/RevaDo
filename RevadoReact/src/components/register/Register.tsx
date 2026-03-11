@@ -1,8 +1,7 @@
 import  { useState } from 'react'
-import { UserService, User } from '../../services/user-service';
+import { User } from '../../App';
 
 function register({ setView}: any) {
-const uService = new UserService();
     const [uname, setUname] = useState("");
     const [pass, setPass] = useState("");
     const [email, setEmail] = useState("");
@@ -15,36 +14,31 @@ const uService = new UserService();
     
 
     async function registerUser() {
-        const msg = document.getElementById("msg") as HTMLParagraphElement;
-        console.log("Registering user...");
-        
-        if (pass === conf) {
-            try
-            {
-                let user: User = {
-                    username: uname,
-                    password: pass,
-                    email: email,
-                    first: first,
-                    last: last,
-                    dob: dob ? new Date(dob) : undefined,
-                    phone: phone
-                } as User;
-      
-               
-                console.log("User registered:", user);
-                //let msg = document.getElementById("msg") as HTMLParagraphElement;
-                uService.registerUser(user);
-                msg.innerText = "User registered successfully!";
-            console.log("User registered successfully!");
+           const params = new URLSearchParams()
+            params.append('username', uname)
+            params.append('password', pass)
+            params.append('email', email || "")
+            params.append('first', first || "")
+            params.append('last', last || "")
+            params.append('phone', phone || "")
+            params.append('dob', dob ? new Date(dob).toISOString().split('T')[0] : "");
+            
+            var response = await fetch("http://localhost:8081/register", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/x-www-form-urlencoded"
+                },
+                body: params.toString()
+            });
+
+            if (response.ok) {
+                console.log("User registered successfully!");
                 setView(1);
-            }
-            catch(error)      {
-               // msg.innerText = "Error registering user. Please try again.";
-                console.error("Error registering user:", error);
+            } else {
+                console.error("Error registering user:", response.status);
             }
         }
-    }
+    
 
 
   return (
