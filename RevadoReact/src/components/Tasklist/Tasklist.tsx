@@ -1,7 +1,7 @@
 import React from 'react'
 import { Task } from '../../App'
 
-function Tasklist({task, setTask, setView}: any) 
+function Tasklist({task, setTask, setView2}: any) 
 {
     async function deleteTask(tid: number) {
         const params = new URLSearchParams();
@@ -26,15 +26,14 @@ function Tasklist({task, setTask, setView}: any)
         <div className="task-item" style={{ backgroundColor: 'lime' }}>
             <div className="task-text">
                 <strong>{ task.title }</strong>
-             
-                <p>{ task.description }</p>
+        
                 <p>{ task.description }</p>
                 <p>Owner: { task.owner.username }</p>
                 <p>Priority: { task.priority }</p>
             </div>
             <nav className="task-buttons">
                <button  onClick={() => deleteTask(task.tid!)}>Delete</button>
-                <button  onClick={() => setView(3)}>Update</button> 
+                <button  onClick={() => setView2(3)}>Update</button> 
             </nav>
             { task.subtasks && task.subtasks.length > 0 ? (
                 <div >
@@ -67,7 +66,7 @@ function Tasklist({task, setTask, setView}: any)
                                     <nav className="subtask-buttons">
 
                                         <button className="subtask-button complete"  onClick={() => completeTask(subtask.tid!)}>Complete</button>
-                                        <button className="subtask-button update" onClick={() => setView(3)}>Update</button> 
+                                        <button className="subtask-button update" onClick={() => setView2(3)}>Update</button> 
                                         <button className="subtask-button delete" onClick={() => deleteTask(subtask.tid!)}> Delete</button>
                                     </nav>
                                 </div>
@@ -98,7 +97,7 @@ function Tasklist({task, setTask, setView}: any)
             <nav className="task-buttons">
                <button  onClick={() => deleteTask(task.tid!)}>Delete</button>
                 <br></br>
-                <button  onClick={() => setView(3)}>Update</button> 
+                <button  onClick={() => setView2(3)}>Update</button> 
             </nav>
             <br></br>
             { task.subtasks && task.subtasks.length > 0 && (
@@ -142,7 +141,7 @@ function Tasklist({task, setTask, setView}: any)
                                     <nav className="subtask-buttons">
 
                                         <button className="subtask-button complete"  onClick={() => completeTask(subtask.tid!)}>Complete</button>
-                                        <button className="subtask-button update" onClick={() => setView(3)}>Update</button> 
+                                        <button className="subtask-button update" onClick={() => setView2(3)}>Update</button> 
                                         <button className="subtask-button delete" onClick={() => deleteTask(subtask.tid!)}> Delete</button>
                                     </nav>
                                 </div>

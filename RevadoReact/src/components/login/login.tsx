@@ -15,7 +15,7 @@ function login({setLoggedIn}: any){
     const response: any = await fetch(`http://localhost:8081/login?${params.toString()}`,{
         method: "GET",
       });
-      var resp: User |null= await response.json();
+      var resp: User = await response.json();
       console.log("Login response received:", resp);
       if (resp==null || response.status !== 200) {
         console.error("Error: User not found or login failed");

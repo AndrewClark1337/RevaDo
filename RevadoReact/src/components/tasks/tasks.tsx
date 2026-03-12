@@ -1,18 +1,26 @@
 import React from 'react'
-import { Task } from '../../App';
+import { Task, User } from '../../App';
 
 import Tasklist from '../Tasklist/Tasklist';
 
-function Tasks(setLoggedIn: any, loggedIn: any) 
+function Tasks( {loggedIn}: {loggedIn: User}) 
 {
 
   const [tasks, setTasks] = React.useState<Task[]>([])
-  const [view, setView] = React.useState<number>(0)
+  const [view2, setView2] = React.useState<number>(0)
   const [selectedTask, setSelectedTask] = React.useState<number| null>(null)
-  async function getTasks(){
+  async function getTasks(user: User, event?: React.FormEvent<HTMLFormElement>) {
     try{
+      event?.preventDefault();
+      console.log("User: ", loggedIn);
       const params = new URLSearchParams();
-      params.append('id',loggedIn.id.toString()); 
+      if(user.uid){
+         params.append('id', user.uid.toString()); 
+      }
+      else
+      {
+        params.append('id', loggedIn.uid!.toString());
+      }
       console.log("calling getAllTasks");
       var response=await fetch(`http://localhost:8081/gettasks?${params.toString()}`,{
         method: "GET"
@@ -24,7 +32,9 @@ function Tasks(setLoggedIn: any, loggedIn: any)
       }
       else{
         const t: Task[] = await response.json();
+        console.log("Parsed tasks:", t);
         setTasks(t);
+        setView2(0);
       }
     }
     catch(error)
@@ -35,11 +45,11 @@ function Tasks(setLoggedIn: any, loggedIn: any)
 
   }
   function refreshTasks() {
-    // Implementa
-    // function for refreshing tasks
+    getTasks(loggedIn);
+    setView2(0);
   }
   function back() {
-    setView(0);
+    setView2(0);
     setSelectedTask(null);
   }
   function deleteTask(tid: number) {
@@ -59,8 +69,8 @@ function Tasks(setLoggedIn: any, loggedIn: any)
   const incompTask = {
     backgroundColor: 'antiquewhite'
   }
-  getTasks();
-  if(view==0)
+  //getTasks(loggedIn);
+  if(view2==0)
   {
     return (
       <div>
@@ -69,17 +79,18 @@ function Tasks(setLoggedIn: any, loggedIn: any)
           Refresh Tasks
         </button>
       </nav>
-      { tasks.length === 0 ? (
+      { !tasks || tasks.length === 0 ? (
         <p>No tasks available. Please add a task.</p>
       ) : ( // if there are tasks
-        <Tasklist task={tasks[0]} setTask={setSelectedTask} setView={setView} />
-      
+        tasks.map((task: Task) => (
+          <Tasklist key={task.tid} task={task} setTask={setSelectedTask} setView2={setView2} />
+        ))
       )}
       </div>
     )
   }
   
-  else if(view==1)
+  else if(view2==1)
     {
       return(
       <button className="task-button" style={{ width: '25%' }} onClick={back}>
@@ -88,7 +99,7 @@ function Tasks(setLoggedIn: any, loggedIn: any)
       )
       //<app-subtask (viewChange)="changeView($event)" [parentId]="selectedTask()!"></app-subtask>
     }
-  else if(view==2)
+  else if(view2==2)
     {
       return (
         <button className="task-button" style={{ width: '25%' }} onClick={back}>

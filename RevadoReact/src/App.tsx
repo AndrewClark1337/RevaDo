@@ -1,9 +1,9 @@
 import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
+
 import './App.css'
 import Login from './components/login/login'
 import Register from './components/register/Register'
+import Tasks from './components/tasks/Tasks'
 
 function App() {
   const [loggedIn, setLoggedIn] = useState<User| null>(null)
@@ -40,8 +40,8 @@ function App() {
   else  {
     return (
       <div>
-        <h1 setLoggedIn={setLoggedIn} loggedIn={loggedIn}>Welcome, {loggedIn.username}!</h1>
-        <Tasks />
+        <h1 >Welcome, {loggedIn.username}!</h1>
+        <Tasks  loggedIn={loggedIn} />
       </div>
     )
   }
