@@ -45,9 +45,12 @@ function login({setLoggedIn}: any){
       
            
         <form id="loginForm" onSubmit={loginUser}> 
-            <label className="form-label">Username: </label><input id="uname" type="text" value={uname} onChange={(e) => setUname(e.target.value)} />
+            <label className="form-label">Username: 
+              </label><input id="uname" type="text" value={uname} onChange={(e) => setUname(e.target.value)} />
             <br />
-            <label className="form-label">Password: </label><input id="pass" type="password" value={pass} onChange={(e) => setPass(e.target.value)} />
+            <label className="form-label">Password:
+              <input id="pass" type="password" value={pass} onChange={(e) => setPass(e.target.value)} /> 
+            </label>
             <br />
             <button type="submit" > Login </button>
 

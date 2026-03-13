@@ -1,7 +1,8 @@
-import React from 'react'
+import React, { use, useEffect } from 'react'
 import { Task, User } from '../../App';
 
 import Tasklist from '../Tasklist/Tasklist';
+import CreateTasks from '../CreateTasks/CreateTasks';
 
 function Tasks( {loggedIn}: {loggedIn: User}) 
 {
@@ -44,6 +45,9 @@ function Tasks( {loggedIn}: {loggedIn: User})
     }
 
   }
+  useEffect(() => {
+    getTasks(loggedIn);
+  }, []);
   function refreshTasks() {
     getTasks(loggedIn);
     setView2(0);
@@ -51,6 +55,7 @@ function Tasks( {loggedIn}: {loggedIn: User})
   function back() {
     setView2(0);
     setSelectedTask(null);
+    refreshTasks();
   }
   function deleteTask(tid: number) {
     // Implementation for deleting a task
@@ -61,6 +66,9 @@ function Tasks( {loggedIn}: {loggedIn: User})
   function toUpdateTask(task: Task) {
   }
   function toSubtask(task: Task) {
+  }
+  function toCreateTask() {
+    setView2(3);
   }
   const compTask = 
   {
@@ -78,12 +86,16 @@ function Tasks( {loggedIn}: {loggedIn: User})
         <button className="refresh" onClick={refreshTasks}>
           Refresh Tasks
         </button>
+        <button className="task-button" onClick={toCreateTask}>
+          Create Task
+        </button>
       </nav>
       { !tasks || tasks.length === 0 ? (
         <p>No tasks available. Please add a task.</p>
       ) : ( // if there are tasks
         tasks.map((task: Task) => (
-          <Tasklist key={task.tid} task={task} setTask={setSelectedTask} setView2={setView2} />
+          
+          <Tasklist key={task.tid}  refresh={refreshTasks} completed={task.completed} task={task} setTask={setSelectedTask} setView2={setView2} />
         ))
       )}
       </div>
@@ -93,21 +105,39 @@ function Tasks( {loggedIn}: {loggedIn: User})
   else if(view2==1)
     {
       return(
+        <>
       <button className="task-button" style={{ width: '25%' }} onClick={back}>
         Back to Tasks
       </button>
+      </>
       )
       //<app-subtask (viewChange)="changeView($event)" [parentId]="selectedTask()!"></app-subtask>
     }
   else if(view2==2)
     {
       return (
+        <>
         <button className="task-button" style={{ width: '25%' }} onClick={back}>
           Back to Tasks
         </button>
+        </>
            // <app-update (viewChange)="changeView($event)" [taskId]="selectedTask()!"></app-update>
       )
     }
+    else if(view2==3)
+    {
+      return(
+        <>
+        <button className="task-button" style={{ width: '25%' }} onClick={back}>
+          Back to Tasks
+        </button>
+        <CreateTasks loggedIn={loggedIn} refresh={refreshTasks} setView2={setView2}/>
+
+      </>
+
+      )
+    }
+
 }
 
 export default Tasks

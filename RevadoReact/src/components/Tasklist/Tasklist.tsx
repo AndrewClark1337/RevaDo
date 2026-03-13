@@ -1,7 +1,8 @@
 import React from 'react'
 import { Task } from '../../App'
+import Taskitem from '../Taskitem/Taskitem';
 
-function Tasklist({task, setTask, setView2}: any) 
+function Tasklist({task, setTask, setView2, completed, refreshTasks}: any) 
 {
     async function deleteTask(tid: number) {
         const params = new URLSearchParams();
@@ -10,43 +11,53 @@ function Tasklist({task, setTask, setView2}: any)
         {
         method: 'POST',
         });
+        if (response.ok)    
+        {
+            console.log("Task deleted successfully");
+            setTask(null);
+            refreshTasks();
+        }
     }
     async function completeTask(tid: number) {
         const params = new URLSearchParams();
         params.append('id', tid.toString());
         const response = await fetch(`http://localhost:8081/complete?${params}`, 
-      {
-      method: 'POST',
-    });
+        {
+            method: 'POST',
+        });
+        if(response.ok)    {
+            let t: Task = task;
+            t.completed = true;
+            setTask(t);
+            refreshTasks();
+            console.log("Task marked as completed");
+        }
+        else    {
+            console.error("Error marking task as completed:", response.status);
+            console.log("Response:", response);
+        }
+
     }
 
-    if (task.completed)
-    {
+   
         return (
-        <div className="task-item" style={{ backgroundColor: 'lime' }}>
+        <div className="task-item" style={ completed ? { backgroundColor: 'lime' } : { backgroundColor: 'antiquewhite' } }>
             <div className="task-text">
-                <strong>{ task.title }</strong>
-        
-                <p>{ task.description }</p>
-                <p>Owner: { task.owner.username }</p>
-                <p>Priority: { task.priority }</p>
+                <Taskitem task={task} />
             </div>
             <nav className="task-buttons">
                <button  onClick={() => deleteTask(task.tid!)}>Delete</button>
                 <button  onClick={() => setView2(3)}>Update</button> 
             </nav>
             { task.subtasks && task.subtasks.length > 0 ? (
-                <div >
+                <div className="subtask-list">
                     <h4  >Subtasks:</h4>
                     <ul>
                         {task.subtasks.map((subtask: Task) => 
                             subtask.completed ? (
                                 <div style = {{backgroundColor: 'lime'}}>
                                     <li  >
-                                        <strong>{ subtask.title }</strong>
-                                        <p>{ subtask.description }</p>
-                                        <p>Owner: { subtask.owner.username }</p>
-                                        <p>Priority: { subtask.priority }</p>
+                                        <Taskitem task={subtask} />
                                     </li>
                                     <nav className="subtask-buttons">
                                         <button className="subtask-button delete" onClick={() => deleteTask(subtask.tid!)}>Delete</button>
@@ -57,10 +68,7 @@ function Tasklist({task, setTask, setView2}: any)
                             ):(
                                 <div className="subtask-item"style={{backgroundColor: 'antiquewhite'}}>
                                     <li className="subtask-text" >
-                                        <strong>{ subtask.title }</strong>
-                                        <p>{ subtask.description }</p>
-                                        <p>Owner: { subtask.owner.username }</p>
-                                        <p>Priority: { subtask.priority }</p>
+                                        <Taskitem task={subtask} />
                                         
                                     </li>
                                     <nav className="subtask-buttons">
@@ -78,81 +86,8 @@ function Tasklist({task, setTask, setView2}: any)
             }
         </div>
         )    
-    }
-    else
-    {
-        return (
-        <div className="task-item" style={{backgroundColor: 'antiquewhite'}}>
-            <div className="task-text">
-                <strong>{ task.title }</strong>
-                <br></br>
-                <p>{ task.description }</p>
-                <br></br>
-                <p>{ task.description }</p>
-                <br></br>
-                <p>Owner: { task.owner.username }</p>
-                <br></br>
-                <p>Priority: { task.priority }</p>
-            </div>
-            <nav className="task-buttons">
-               <button  onClick={() => deleteTask(task.tid!)}>Delete</button>
-                <br></br>
-                <button  onClick={() => setView2(3)}>Update</button> 
-            </nav>
-            <br></br>
-            { task.subtasks && task.subtasks.length > 0 && (
-                <div >
-                    <h4  >Subtasks:</h4>
-                    <br></br>
-                    <ul>
-                        {task.subtasks.map((subtask: Task) => 
-                
-                            subtask.completed ?
-                            (
-                                <div  style = {{backgroundColor: 'lime'}}>
-                                    <li  >
-                                        <strong>{ subtask.title }</strong>
-                                        <br></br>
-                                        <p>{ subtask.description }</p>
-                                        <br></br>
-                                        <p>Owner: { subtask.owner.username }</p>
-                                        <br></br>
-                                        <p>Priority: { subtask.priority }</p>
-                                    </li>
-                                    <nav className="subtask-buttons">
-                                        <button className="subtask-button delete" onClick={() => deleteTask(subtask.tid!)}>Delete</button>
-                                        <br></br>
-                                        <button  > Update </button> 
-                                    </nav>
-                
-                                </div>
-                            ):(
-                                <div className="subtask-item"style={{backgroundColor: 'antiquewhite'}}>
-                                    <li className="subtask-text" >
-                                        <strong>{ subtask.title }</strong>
-                                        <br></br>
-                                        <p>{ subtask.description }</p>
-                                        <br></br>
-                                        <p>Owner: { subtask.owner.username }</p>
-                                        <br></br>
-                                        <p>Priority: { subtask.priority }</p>
-                                        
-                                    </li>
-                                    <nav className="subtask-buttons">
-
-                                        <button className="subtask-button complete"  onClick={() => completeTask(subtask.tid!)}>Complete</button>
-                                        <button className="subtask-button update" onClick={() => setView2(3)}>Update</button> 
-                                        <button className="subtask-button delete" onClick={() => deleteTask(subtask.tid!)}> Delete</button>
-                                    </nav>
-                                </div>
-                            )
-                        )}
-                    </ul>
-                </div>
-            )}
-        </div>
-        )
-    }
+    
+    
   
 }
 
