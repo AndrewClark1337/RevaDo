@@ -30,14 +30,15 @@ public class UserController {
     {
         try {
             User u = this.userService.loginUser(username, password);
+            System.out.println("logging in: " + u);
             if (u != null){
-                System.out.println("logging in: " + u);
+
                 return ResponseEntity.ok(u);
             }
             else
             {
                 System.out.println("Error: User not found");
-                return ResponseEntity.ok(null);
+                return  ResponseEntity.notFound().build();
             }
 
         }

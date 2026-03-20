@@ -1,12 +1,14 @@
-import React, { use, useEffect } from 'react'
-import { Task, User } from '../../App';
+import React, { use, useContext, useEffect } from 'react'
+import { LoggedInUser, Task, User } from '../../App';
 
 import Tasklist from '../Tasklist/Tasklist';
 import CreateTasks from '../CreateTasks/CreateTasks';
+import Subtasks from '../Subtasks/Subtasks';
+import UpdateTasks from '../UpdateTasks/UpdateTasks';
 
-function Tasks( {loggedIn}: {loggedIn: User}) 
+function Tasks( ) 
 {
-
+  const loggedIn = useContext(LoggedInUser)!;
   const [tasks, setTasks] = React.useState<Task[]>([])
   const [view2, setView2] = React.useState<number>(0)
   const [selectedTask, setSelectedTask] = React.useState<number| null>(null)
@@ -57,16 +59,7 @@ function Tasks( {loggedIn}: {loggedIn: User})
     setSelectedTask(null);
     refreshTasks();
   }
-  function deleteTask(tid: number) {
-    // Implementation for deleting a task
-  }
-  function completeTask(tid: number) {
 
-  }
-  function toUpdateTask(task: Task) {
-  }
-  function toSubtask(task: Task) {
-  }
   function toCreateTask() {
     setView2(3);
   }
@@ -81,12 +74,12 @@ function Tasks( {loggedIn}: {loggedIn: User})
   if(view2==0)
   {
     return (
-      <div>
-      <nav>
+    <div className='task-list'>
+      <nav className='nav-buttons'>
         <button className="refresh" onClick={refreshTasks}>
           Refresh Tasks
         </button>
-        <button className="task-button" onClick={toCreateTask}>
+        <button className="create" onClick={toCreateTask}>
           Create Task
         </button>
       </nav>
@@ -98,7 +91,7 @@ function Tasks( {loggedIn}: {loggedIn: User})
           <Tasklist key={task.tid}  refresh={refreshTasks} completed={task.completed} task={task} setTask={setSelectedTask} setView2={setView2} />
         ))
       )}
-      </div>
+    </div>
     )
   }
   
@@ -106,32 +99,34 @@ function Tasks( {loggedIn}: {loggedIn: User})
     {
       return(
         <>
-      <button className="task-button" style={{ width: '25%' }} onClick={back}>
+      <button className="back-button" onClick={back}>
         Back to Tasks
       </button>
+      <Subtasks  refresh={refreshTasks} setView2={setView2} parent={selectedTask!}/>
       </>
       )
-      //<app-subtask (viewChange)="changeView($event)" [parentId]="selectedTask()!"></app-subtask>
+      
     }
   else if(view2==2)
     {
       return (
         <>
-        <button className="task-button" style={{ width: '25%' }} onClick={back}>
+        <button className="back-button" onClick={back}>
           Back to Tasks
         </button>
+        <UpdateTasks   setView2={setView2} selectedTask={selectedTask!} />
         </>
-           // <app-update (viewChange)="changeView($event)" [taskId]="selectedTask()!"></app-update>
+          
       )
     }
     else if(view2==3)
     {
       return(
         <>
-        <button className="task-button" style={{ width: '25%' }} onClick={back}>
+        <button className="back-button" onClick={back}>
           Back to Tasks
         </button>
-        <CreateTasks loggedIn={loggedIn} refresh={refreshTasks} setView2={setView2}/>
+        <CreateTasks  refresh={refreshTasks} setView2={setView2}/>
 
       </>
 

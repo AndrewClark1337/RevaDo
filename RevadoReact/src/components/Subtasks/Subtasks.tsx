@@ -1,7 +1,9 @@
 import React from 'react'
 import { LoggedInUser, User } from '../../App';
-function CreateTasks({refresh, setView2}: { refresh: () => void, setView2: (view: number) => void}) {
-    const [title, setTitle] = React.useState('');
+
+
+function Subtasks({ refresh, setView2, parent}: {refresh: () => void, setView2: (view: number) => void, parent: number}) {
+       const [title, setTitle] = React.useState('');
     const [description, setDescription] = React.useState('');
     const [priority, setPriority] = React.useState(3);
     const loggedIn = React.useContext(LoggedInUser)!;
@@ -13,7 +15,8 @@ function CreateTasks({refresh, setView2}: { refresh: () => void, setView2: (view
         params.append('description', description ?? '');
         params.append('owner', loggedIn.uid ? loggedIn.uid.toString() : "0");
         params.append('completed', 'false');
-  
+        params.append('parent', parent.toString());
+        console.log("Parent task ID:", parent);
         params.append('priority', priority.toString());
         console.log("Creating task with params:", params.toString());
         const response = await fetch(`http://localhost:8081/newtask?${params.toString()}`, {
@@ -30,7 +33,7 @@ function CreateTasks({refresh, setView2}: { refresh: () => void, setView2: (view
     }
   return (
     <div className="create-task-container">
-      <h1>Create Task</h1>
+      <h2>Create SubTask</h2>
 		<form className="create-task-form"  onSubmit={createTask}>
 			<label className="create-task-label" >Title
 			    <input className="create-task-input" id="title" value={title} onChange={(e) => setTitle(e.target.value)} type="text" required />
@@ -52,13 +55,14 @@ function CreateTasks({refresh, setView2}: { refresh: () => void, setView2: (view
             <br></br>
 		
         <br></br>
-        <nav className="submit">
-		    <button className="create-task-button" type="submit" >Create</button>
+			<nav className="submit">
+		    <button className="create-task-button" type="submit" >Update Task</button>
         </nav>
 		</form>
+       
 		<div className="message" id="message" role="status" aria-live="polite"></div>
     </div>
   )
 }
 
-export default CreateTasks
+export default Subtasks

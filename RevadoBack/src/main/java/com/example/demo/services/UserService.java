@@ -36,8 +36,12 @@ public class UserService {
     }
 
     public User findUser(Long id){
-
+    try {
         return userRepository.findByUid(id);
+    }
+    catch(Exception e){
+        return null;
+    }
     }
 
     public List<Object[]> findAllUsers()
